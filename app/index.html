@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Mafia</title>
+
+	<link rel="stylesheet" href="css/style.min.css">
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body class="bg_neutral">
+
+	<section class="card card_start">
+		<div class="card__header">Мафия</div>
+		<div class="card__desc">Чтобы начать игру, выберите количество игроков<br>и выберите роли, которые будут в игре</div>
+
+		<div class="card__checkboxes">
+			<div>
+				<input type="checkbox" class="card__checkbox-original" id="role-commissar" checked="checked">
+				<label for="role-commissar" class="card__checkbox-label">Комиссар</label>
+				
+				<input type="checkbox" class="card__checkbox-original" id="role-don" checked="checked">
+				<label for="role-don" class="card__checkbox-label">Дон мафии</label>
+				
+				<input type="checkbox" class="card__checkbox-original" id="role-killer">
+				<label for="role-killer" class="card__checkbox-label">Маньяк</label>
+				
+				<input type="checkbox" class="card__checkbox-original" id="role-whore">
+				<label for="role-whore" class="card__checkbox-label">Проститутка</label>
+				
+				<input type="checkbox" class="card__checkbox-original" id="role-doctor">
+				<label for="role-doctor" class="card__checkbox-label">Доктор</label>
+			</div>
+			<div class="card__players-scale">
+				<div class="card__players-nums">
+					<div class="card__players-num">10</div>
+					<div class="card__players-num">11</div>
+					<div class="card__players-num">12</div>
+					<div class="card__players-num">13</div>
+					<div class="card__players-num">14</div>
+					<div class="card__players-num">15</div>
+					<div class="card__players-num">16</div>
+				</div>
+				<input type="range" id="players-count" min="10" max="16" step="1" value="10" class="card__players-count">
+			</div>
+		</div>
+		<div class="card__actions">
+			<button class="btn btn_center">Действие</button>
+		</div>
+	</section>
+
+	<section class="card card_night">
+		<div class="card__tr card__tr-moon"></div>
+		<div class="card__ld card__ld-don"></div>
+
+		<div class="card__header">Раздача карт</div>
+		<div class="card__desc">Город засыпает. Раздайте карты</div>
+		<div class="card__checkboxes"></div>
+		<button class="btn btn_center">Действие</button>
+	</section>
+
+	<section class="card card_night">
+		<div class="card__tr card__tr-moon"></div>
+		<div class="card__ld card__ld-don"></div>
+
+		<div class="card__header">Знакомство</div>
+		<div class="card__desc">По очереди попросите проснуться представителя каждой роли и заполните поля. Когда проснётся Мафия, дайте им время чтобы назначить убийства на первые три ночи</div>
+		<div class="card__checkboxes"></div>
+		<button class="btn btn_center">Действие</button>
+	</section>
+
+	<section class="card card_day" id="first-action">
+		<div class="card__tr card__tr-sun"></div>
+		<div class="card__ld card__ld-microphone"></div>
+
+		<div class="card__header">Обсуждение</div>
+		<div class="card__desc">Начиная с игрока под номером {1} дайте всем по очереди возможность говорить на 60 секунд. Выставленных на голосование заполните в форме ниже</div>
+		<div class="card__checkboxes"></div>
+		<div class="card__actions">
+			<button class="btn btn_center">Действие</button>
+		</div>
+	</section>
+
+	<section class="card card_day">
+		<div class="card__tr card__tr-sub"></div>
+		<div class="card__ld card__ld-microphone"></div>
+
+		<div class="card__header">Голосование</div>
+		<div class="card__desc">Озвучте выставленных на голосование игроков и проведите голосование в таком же порядке. Запишите результаты голосования в полях ниже</div>
+		<div class="card__checkboxes"></div>
+		<button class="btn btn_center">Действие</button>
+	</section>
+
+	<section class="card card_night">
+		<div class="card__tr card__tr-moon"></div>
+		<div class="card__ld card__ld-don"></div>
+
+		<div class="card__header">Ночь: Мафия</div>
+		<div class="card__desc">Скажите, что Мафия выходит на охоту и назовите номер каждого игрока. Если весь состав Мафия загнул пальцы на один номер, пометьте этот номер ниже</div>
+		<div class="card__checkboxes"></div>
+		<button class="btn btn_center">Действие</button>
+	</section>
+
+	<section class="card card_night">
+		<div class="card__tr card__tr-moon"></div>
+		<div class="card__ld card__ld-don"></div>
+
+		<div class="card__header">Ночь: Маньяк</div>
+		<div class="card__desc">Разбудите Маньяка и узнайте кого он убьёт этой ночью. Выбранный номер пометьте ниже</div>
+		<div class="card__checkboxes"></div>
+		<button class="btn btn_center">Действие</button>
+	</section>
+
+	<section class="card card_night">
+		<div class="card__tr card__tr-moon"></div>
+		<div class="card__ld card__ld-don"></div>
+
+		<div class="card__header">Ночь: Проститутка</div>
+		<div class="card__desc">Разбудите девушку лёгкого поведения и узнайте к кому она пойдёт этой ночью. Выбранный номер пометьте ниже</div>
+		<div class="card__checkboxes"></div>
+		<button class="btn btn_center">Действие</button>
+	</section>
+
+	<section class="card card_night">
+		<div class="card__tr card__tr-moon"></div>
+		<div class="card__ld card__ld-don"></div>
+
+		<div class="card__header">Ночь: Доктор</div>
+		<div class="card__desc">Разбудите Доктора и узнайте кого он хочет попытаться спасти этой ночью. Выбранный номер пометьте ниже</div>
+		<div class="card__checkboxes"></div>
+		<button class="btn btn_center">Действие</button>
+	</section>
+
+	<section class="card card_day">
+		<div class="card__tr card__tr-sun"></div>
+		<div class="card__ld card__ld-microphone"></div>
+
+		<div class="card__header">Утро: Смерти</div>
+		<div class="card__desc">Озвучте номера игроков, которые покидают игру в связи с игровой смертью</div>
+		<div class="card__checkboxes"></div>
+		<button class="btn btn_center">Действие</button>
+	</section>
+
+	<div class="arrow-prev" id="arrow-prev"></div>
+	<div class="arrow-next" id="arrow-next"></div>
+	<!-- scripts -->
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/main.js"></script>
+</body>
+</html>

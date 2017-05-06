@@ -1,0 +1,375 @@
+@import "http://fonts.fontstorage.com/import/lato.css";
+
+* {
+	box-sizing: border-box;
+	font: 200 18px/1.6em Lato, sans-serif;
+}
+
+html, body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-size: 18px;
+	font: 200 18px/1.6em Lato, sans-serif;
+}
+
+/********************
+*				BODY				*
+********************/
+body {
+	background-color: #eaeaea;
+	transition: all .3s;
+}
+
+.bg_day,
+.bg_night,
+.bg_neutral {
+	overflow: hidden;
+}
+
+.bg_day {
+	background-color: #fc8;
+}
+
+.bg_night {
+	background-color: #357;
+}
+
+.bg_neutral {
+	background-color: #333;
+}
+
+.bg_neutral:before,
+.bg_neutral:after {
+	content: "";
+	position: absolute;
+	height: 50vh;
+	width: 100vw;
+	left: 0;
+}
+
+.bg_neutral:before {
+	background-image: url(../img/starring.png);
+	top: 0;
+}
+
+.bg_neutral:after {
+	background-image: url(../img/starring_red.png);
+	bottom: 0;
+}
+
+/********************
+*				CARD				*
+********************/
+.card {
+	background-color: #fff;
+	float: left;
+	clear: left;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	height: 80vh;
+	margin: 10vh 10vw;
+	position: relative;
+	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+	width: 80vw;
+	padding: 0 26vmin;
+	z-index: 2;
+
+	// Active block shadow
+	&_active {
+		box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+	}
+
+	// Top-Right Moon or Sun
+	&__tr,
+	&__ld {
+		position: absolute;
+		display: block;
+		background-position: center center;
+		background-repeat: no-repeat;
+		width: 20vmin;
+		height: 20vmin;
+	}
+
+	&__tr {
+		top: 3vmin;
+		right: 3vmin;
+
+		&-sun {
+			background-image: url(../img/sun.svg);
+			background-size: 20vmin;
+		}
+
+		&-moon {
+		background-size: 30vmin;
+			background-image: url(../img/moon.svg);
+		}
+	}
+
+	// Left-Bottom Action image
+	&__ld {
+		bottom: 0;
+		left: 0;
+
+		&-don {
+			background-image: url(../img/don.svg);
+		}
+
+		&-microphone {
+			background-image: url(../img/microphone.svg);
+		}
+	}
+
+	// Фон времени суток
+	&_day {
+		background-color: #ffc;
+
+		.btn {
+			background-color: #fc8;
+			color: #333;
+			box-shadow: inset 1px 1px 2px rgba(255,255,255,.2), 1px 1px 2px rgba(0,0,0,.2);
+		}
+	}
+
+	&_night {
+		background-color: #79c;
+
+		.card__header,
+		.card__desc {
+			color: #fff;
+		}
+		.btn {
+			background-color: #357;
+			color: #fff;
+		}
+	}
+
+	&_start {
+		background-color: #eee;
+	}
+
+	/*
+	20vh	-	header
+	20vh	-	desc
+	30vh	-	output
+	10vh	-	button
+	*/
+
+	// HEADER - Оформление блоков внутри карточек
+	&__header {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-weight: 300;
+		height: 20vh;
+		font-size: 5rem;
+		line-height: 5rem;
+		white-space: nowrap;
+		text-align: center;
+	}
+
+	// DESC - Описание карточек
+	&__desc {
+		display: flex;
+		align-items: center;
+		font-size: 1.6rem;
+		height: 20vh;
+		font-weight: 300;
+		justify-content: center;
+		text-align: center;
+	}
+
+	// CHECKBOXES - Чекбоксы
+	&__checkboxes {
+		display: flex;
+		flex-direction: column;
+		height: 30vh;
+		text-align: center;
+		justify-content: space-around;
+	}
+
+	&__checkbox-original {
+		display: none;
+	}
+
+	&__checkbox-label {
+		display: inline-block;
+		cursor: pointer;
+		padding: 5px 20px;
+		margin: 10px;
+		background-color: transparent;
+		position: relative;
+		border-bottom: 3px solid #ddd;
+	}
+
+	&__checkbox-label:before {
+		content: "";
+		background-color: #ccc;
+		bottom: -3px;
+		height: 3px;
+		left: 50%;
+		position: absolute;
+		width: 0%;
+		transition: all .3s ease-in-out;
+	}
+
+	&__checkbox-original:checked + &__checkbox-label {
+		&:before {
+			background-color: #0c0;
+			width: 100%;
+			left: 0;
+		}
+	}
+
+	// ACTIONS - Кнопки
+	&__actions {
+		height: 10vh;
+	}
+
+	// PLAYERS-COUNT - Выбор количества игроков
+	.card__players-count {
+	-webkit-appearance: none;
+	width: 40vw;
+	background: transparent;
+	position: relative;
+	z-index: 2;
+
+		&::-moz-range-thumb {
+			border: 1px solid #555;
+			border: none;
+			border-radius: 50%;
+			background: #0c0;
+			cursor: pointer;
+		}
+
+		&::-moz-range-thumb,
+		&::-ms-thumb {
+			-webkit-appearance: none;
+		}
+
+		&:focus {
+			outline: none;
+		}
+
+		&::-moz-range-track {
+			width: 100%;
+			height: 3px;
+			cursor: pointer;
+			animate: 0.2s;
+			background: #ddd;
+		}
+	}
+
+	&__players-nums {
+		display: flex;
+		width: 40vw;
+		margin: 0 auto;
+		justify-content: space-between;
+	}
+
+	&__players-num {
+		display: inline;
+		position: relative;
+	}
+
+	&__players-num:before {
+		content: "";
+		height: 14px;
+		width: 2px;
+		margin-left: -1px;
+		background-color: #ddd;
+		position: absolute;
+		left: 50%;
+		top: 90%;
+		z-index: .99;
+	}
+}
+
+/********************
+*			NAV BTNs			*
+********************/
+.arrow-prev {
+	top: 2vmin;
+}
+
+.arrow-next {
+	bottom: 2vmin;
+}
+
+.arrow-prev,
+.arrow-next {
+	cursor: pointer;
+	height: 10vmin;
+	left: ~"calc(50vw - 5vmin)";
+	position: fixed;
+	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+	width: 10vmin;
+	z-index: 2;
+
+	&:before,
+	&:after {
+		background-color: #fff;
+		box-shadow: 0 0 2px #555;
+		content: "";
+		display: block;
+		height: 2px;
+		position: absolute;
+		top: 50%;
+		width: 40%;
+		transition: all .3s;
+	}
+
+	&:before {
+		left: 16%;
+	}
+
+	&:after {
+		right: 16%;
+	}
+
+	&_animated:before {
+		left: 14%;
+	}
+
+	&_animated:after {
+		right: 14%;
+	}
+}
+
+.arrow-next:before,
+.arrow-prev:after {
+	transform: rotate(45deg);
+}
+
+.arrow-next:after,
+.arrow-prev:before {
+	transform: rotate(-45deg);
+}
+
+.arrow-prev_animated:after,
+.arrow-next_animated:before {
+	transform: rotate(30deg);
+}
+
+.arrow-next_animated:after,
+.arrow-prev_animated:before {
+	transform: rotate(-30deg);
+}
+
+.btn {
+	background-color: #ddd;
+	display: block;
+	cursor: pointer;
+	border: none;
+	padding: 15px 50px;
+	border-radius: 2px;
+	box-shadow: 0 1px 2px rgba(0,0,0,.2);
+
+	&_center {
+		margin: 0 auto;
+	}
+
+	&:active {
+		box-shadow: 1px 1px 2px rgba(255,255,255,.2), inset 1px 1px 2px rgba(0,0,0,.2);
+	}
+}
