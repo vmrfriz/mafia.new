@@ -235,7 +235,6 @@ body {
 	z-index: 2;
 
 		&::-moz-range-thumb {
-			border: 1px solid #555;
 			border: none;
 			border-radius: 50%;
 			background: #0c0;
@@ -247,16 +246,15 @@ body {
 			-webkit-appearance: none;
 		}
 
-		&:focus {
-			outline: none;
-		}
-
 		&::-moz-range-track {
 			width: 100%;
 			height: 3px;
 			cursor: pointer;
-			animate: 0.2s;
 			background: #ddd;
+		}
+
+		&:focus::-moz-range-track {
+			outline: none;
 		}
 	}
 
@@ -327,13 +325,6 @@ body {
 		right: 16%;
 	}
 
-	&_animated:before {
-		left: 14%;
-	}
-
-	&_animated:after {
-		right: 14%;
-	}
 }
 
 .arrow-next:before,
@@ -344,16 +335,6 @@ body {
 .arrow-next:after,
 .arrow-prev:before {
 	transform: rotate(-45deg);
-}
-
-.arrow-prev_animated:after,
-.arrow-next_animated:before {
-	transform: rotate(30deg);
-}
-
-.arrow-next_animated:after,
-.arrow-prev_animated:before {
-	transform: rotate(-30deg);
 }
 
 .btn {
