@@ -1,9 +1,9 @@
 $(document).ready(function () {
-	Cards.updateContext(); // Активация фона и видимой карточки
+	Cards.context(); // Активация фона и видимой карточки
 
 	$("#arrow-prev").on("click", Cards.prev);
 	$("#arrow-next").on("click", Cards.next);
-	$(window).on("resize", Cards.fixScroll);
+	$(window).on("resize", Cards.scroll);
 	Cards.jump( $("first-action") );
 
 	// Выключатели ролей
@@ -14,7 +14,7 @@ $(document).ready(function () {
 
 	// Количество игроков
 	$("#players-count").change( function () {
-
+			console.log( Cards.activeCard );
 	});
 });
 
@@ -30,77 +30,71 @@ function dump(obj) {
 
 	var pre = document.createElement('pre');
 	pre.innerHTML = out;
-	document.body.appendChild(pre)
-}
+	document.body.appendChild(pre);
+};
 
 // Функции переключения карточек
 var Cards = {
-	activeCard: $("section.card:first-of-type"),
-	allCards: $("section.card"),
+	active:	$("section.card:first"),
+	all:		$("section.card"),
 
-	// Активация текущей карточки и изменение фона
-	updateContext: function () {
-		var activeCard = this.activeCard;
+	// Обновление контекста для активной карточки
+	context:function () {
+						var active = this.active;
 
-		// Перебор секций
-		$('section.card').each( function () {
+						// section .card_active
+						$('section.card').each( function () {
+							var currSection = $(this);
+							if( currSection == active )
+								currSection.addClass("card_active");
+							else
+								currSection.removeClass("card_active");
+						});
 
-			var currSection = $(this);
+						$("body").removeClass("bg_day bg_night bg_neutral");
 
-			if( currSection == activeCard )
-				currSection.addClass("card_active");
-			else
-				currSection.removeClass("card_active");
+						// body .bg_day
+						if( active.hasClass("card_day") )
+							$("body").addClass("bg_day");
 
-		});
+						// body .bg_night
+						else if( active.hasClass("card_night") )
+							$("body").addClass("bg_night");
 
-		// Соответствующий класс фона body
-		$("body").removeClass("bg_day bg_night bg_neutral");
+						// body .bg_neutral
+						else
+							$("body").addClass("bg_neutral");
+					},
 
-		// bg_day
-		if( activeCard.hasClass("card_day") )
-			$("body").addClass("bg_day");
+	// Скролл к выбранной карточке
+	scroll:	function () {
+						console.log( this );
+						var scrl = this.active.position().top;
+						$('html, body').stop().animate({ scrollTop: scrl }, 300);
+						this.context;
+						return true;
+					},
 
-		// bg_night
-		else if( activeCard.hasClass("card_night") )
-			$("body").addClass("bg_night");
+	// Активация выбранной карточки
+	jump:		function ( obj ) {
+						if( typeof obj !== 'object' ) return false;
+						if( !obj.hasClass("card") ) return false;
+						this.active = obj;
+						this.scroll;
+						this.context;
+					},
 
-		// bg_neutral
-		else
-			$("body").addClass("bg_neutral");
-		
-	},
+	// Активация предыдущей карточки
+	prev:		function () {
+						Cards.active = Cards.active.prev("select.card");
+						Cards.scroll;
+					},
 
-	fixScroll: function () {
-		setTimeout(function () {
-
-			var that = Cards.activeCard,
-				scrl = that.position().top;
-			$('html, body').stop().animate({ scrollTop: scrl }, 300);
-			Cards.updateContext();
-
-		}, 750);
-	},
-
-	jump: function ( obj ) {
-		if( typeof obj !== 'object' ) return false;
-		if( !obj.hasClass("card") ) return false;
-		Cards.activeCard = obj;
-		Cards.foxScroll;
-		Cards.updateContext;
-	},
-
-	// Скролл к предыдущей карточке
-	prev: function () {
-		this.activeCard = this.activeCard.prev("select.card");
-		this.fixScroll;
-	},
-
-	// Скролл к следующей карточке
-	next: function () {
-		this.activeCard = this.activeCard.next("select.card");
-		this.fixScroll;
-	}
+	// Активация следующей карточки
+	next:		function () {
+						Cards.active = Cards.active.next("section.card");
+						Cards.scroll;
+					}
 };
 
 var gameCore = {
@@ -139,63 +133,63 @@ var gameCore = {
 	// Включение/выключение роли
 	// role - роль [red, mafia, don, commissar, killer, whore, doctor]
 	// toggle - boolean (включить или выключить)
-	toggleRole( role, toggle = null ) {
-		var toggler = this.Role.Exist[role];
-		toggler = ( toggle === null ? !toggler : toggle );
-		return toggler;
-	},
+	toggleRole:	function ( role, toggle = null ) {
+								var toggler = this.Role.Exist[role];
+								toggler = ( toggle === null ? !toggler : toggle );
+								return toggler;
+							},
 
 	// Установить роль
 	// playerid - номер игрока
 	// role - роль [red, mafia, don, commissar, killer, whore, doctor]
-	setRole: function ( playerid, role ) {
-		var currRole = this.getRole(playerid);
-		if( currRole !== false ) {
-			delete this.Tole.Players[currRole][playerid];
-		}
-		this.Role.Players[role].push(playerid);
-	},
+	setRole:		function ( playerid, role ) {
+								var currRole = this.getRole(playerid);
+								if( currRole !== false ) {
+									delete this.Tole.Players[currRole][playerid];
+								}
+								this.Role.Players[role].push(playerid);
+							},
 
 	// Возвращает роль игрока
-	getRole: function ( playerid ) {
-		var Players = this.Role.Players;
-		for( var elem in Players) {
-			if( find(Players[elem], playerid) ) return elem;
-		}
-		return false;
-	},
+	getRole:		function ( playerid ) {
+								var Players = this.Role.Players;
+								for( var elem in Players) {
+									if( find(Players[elem], playerid) ) return elem;
+								}
+								return false;
+							},
 
 	// Возвращает всех игроков выбранной роли
 	// team - название роли
 	// format - string или array (возвращает строку или массив)
-	getTeam: function (team, format = "string") {
-		var Players = this.Role.Players;
+	getTeam:		function (team, format = "string") {
+								var Players = this.Role.Players;
 
-		if( format == "array" )
-			return Players[team];
-		else {
-			var playersString = "";
-			for( var i = 0; i < Players[team].length; i++ ) {
-				if( i > 0 ) playersString += ", ";
-				playersString += Players[team][i];
-			}
-			return Players[team];
-		}
-	},
+								if( format == "array" )
+									return Players[team];
+								else {
+									var playersString = "";
+									for( var i = 0; i < Players[team].length; i++ ) {
+										if( i > 0 ) playersString += ", ";
+										playersString += Players[team][i];
+									}
+									return Players[team];
+								}
+							},
 
 	/*=============================
 	---------- Сценарии -----------
 	=============================*/
-	prevAction: function () {
+	prevAction:	function () {
 
-	},
+							},
 
-	nextAction: function () {
+	nextAction:	function () {
 
-	},
+							},
 
-	acts: function () {
+	acts:				function () {
 
-	}
+							}
 
 };

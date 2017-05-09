@@ -2,7 +2,7 @@
 
 * {
 	box-sizing: border-box;
-	font: 200 18px/1.6em Lato, sans-serif;
+	//font: 200 18px/1.6em Lato, sans-serif;
 }
 
 html, body {
@@ -10,8 +10,13 @@ html, body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
-	font-size: 18px;
-	font: 200 18px/1.6em Lato, sans-serif;
+	font: 200 16px/1.6em Lato, sans-serif;
+}
+
+@media (min-width: 1400px) {
+	html, body {
+		font-size: 20px;
+	}
 }
 
 /********************
@@ -37,14 +42,14 @@ body {
 }
 
 .bg_neutral {
-	background-color: #333;
+	background-color: #ccc;
 }
 
 .bg_neutral:before,
 .bg_neutral:after {
 	content: "";
 	position: absolute;
-	height: 50vh;
+	height: 45vh;
 	width: 100vw;
 	left: 0;
 }
@@ -195,7 +200,8 @@ body {
 	&__checkbox-label {
 		display: inline-block;
 		cursor: pointer;
-		padding: 5px 20px;
+		padding: .5rem 15px;
+		font-size: inherit;
 		margin: 10px;
 		background-color: transparent;
 		position: relative;
